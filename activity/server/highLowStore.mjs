@@ -17,7 +17,7 @@ import {
   resolveServerGuess,
 } from './highLowRules.mjs';
 
-export const LEVELIA_GAME_USER_ID = '1552246348756025344';
+export const CARAVAN_GAMES_USER_ID = '1552246348756025344';
 // Explicit operator-approved exception; normal access and wallet checks still apply.
 export const HIGH_LOW_ALLOWED_SUB_ACCOUNT_ID = '1551725849009586270';
 const DISCONNECT_GRACE_MS = 5 * 60 * 1_000;
@@ -148,7 +148,7 @@ export function createHighLowStore(mysqlUrl, {
     const [rows] = await connection.execute(
       'SELECT wallet, is_frozen FROM accounts WHERE user_id = ? FOR UPDATE', [userId]);
     const row = rows[0];
-    if (!row) throw new ApiError(409, 'account_not_found', 'LEVELIAの口座が見つかりません');
+    if (!row) throw new ApiError(409, 'account_not_found', '利用可能なLIA口座が見つかりません');
     return { wallet: Number(row.wallet), isFrozen: Boolean(row.is_frozen) };
   }
 
@@ -166,10 +166,10 @@ export function createHighLowStore(mysqlUrl, {
     if (virtual) return 0;
     const [rows] = await connection.execute(
       'SELECT wallet FROM accounts WHERE user_id = ? LIMIT 1',
-      [LEVELIA_GAME_USER_ID],
+      [CARAVAN_GAMES_USER_ID],
     );
     if (!rows[0]) {
-      throw new ApiError(503, 'game_account_not_found', 'LEVELIA Gameの履歴用口座が見つかりません');
+      throw new ApiError(503, 'game_account_not_found', 'CARAVAN GAMESの履歴用口座が見つかりません');
     }
     return Number(rows[0].wallet);
   }
@@ -189,8 +189,8 @@ export function createHighLowStore(mysqlUrl, {
        (command_name, amount, from_user_id, to_user_id, from_after_wallet, to_after_wallet, comment)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       payout
-        ? [type, amount, LEVELIA_GAME_USER_ID, userId, gameWallet, userAfterWallet, comment]
-        : [type, amount, userId, LEVELIA_GAME_USER_ID, userAfterWallet, gameWallet, comment],
+        ? [type, amount, CARAVAN_GAMES_USER_ID, userId, gameWallet, userAfterWallet, comment]
+        : [type, amount, userId, CARAVAN_GAMES_USER_ID, userAfterWallet, gameWallet, comment],
     );
   }
 

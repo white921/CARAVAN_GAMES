@@ -128,7 +128,7 @@ export function WeeklyLeaderboard({ open, onClose, accessToken }: {
     <dialog ref={dialogRef} className="weekly-dialog" aria-labelledby="weekly-title" onClose={onClose}>
       <motion.div className="weekly-screen" initial={false} animate={{ opacity: open ? 1 : 0 }} transition={{ duration: reducedMotion ? 0 : 0.18 }}>
         <header className="weekly-masthead">
-          <div className="brand"><img className="brand-mark" src="./images/levelia-game-icon.png" alt="" width="42" height="42" /><span className="brand-copy"><span className="brand-name">LEVELIA</span><span className="brand-subtitle">ADVENTURERS' GUILD</span></span></div>
+          <div className="brand"><img className="brand-mark" src="./images/caravan-games-icon.png" alt="" width="42" height="42" /><span className="brand-copy"><span className="brand-name">CARAVAN</span><span className="brand-subtitle">TRAVELING GAME LOBBY</span></span></div>
           <button className="weekly-close" type="button" aria-label="ランキングを閉じてゲームに戻る" onClick={onClose} autoFocus>×</button>
         </header>
         <div className="weekly-heading">

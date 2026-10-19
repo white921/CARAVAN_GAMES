@@ -42,5 +42,5 @@ node activity/server/reportHighLowVirtual.mjs
 
 `TEST_VIRTUAL_MYSQL_URL` には必ず破棄可能な専用DBを指定する。
 テストはDB内のテーブルを作り直す。通常モード用 `TEST_MYSQL_URL` と同じDBを指定しない。
-テストDB名は `levelia_*test`。ユーザーを作成・権限設定できる管理接続が必要。
+テストDB名は `caravan_*test`。ユーザーを作成・権限設定できる管理接続が必要。
 実口座・実履歴への書き込みを許可しない専用テストユーザーで開始・精算・失敗時rollback・自動精算を検証する。

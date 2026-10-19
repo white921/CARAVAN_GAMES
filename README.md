@@ -1,6 +1,6 @@
-# LEVELIA_GAME
+# CARAVAN GAMES
 
-LEVELIA向けのDiscord Activityゲーム集です。React / TypeScript / Motionで画面と演出を実装し、Viteでビルドします。現在はLIAを賭ける1人用ハイアンドローを公開しています。
+さまざまなDiscordサーバーを巡るActivityゲームロビーです。React / TypeScript / Motionで画面と演出を実装し、Viteでビルドします。現在はLIAを賭ける1人用ハイアンドローを収録しています。
 
 ## 構成
 
@@ -65,7 +65,9 @@ npm run dev
 
 `PORT=3000`を設定し、Public NetworkingのTarget Portも`3000`にします。発行されたホスト名をDiscord Developer PortalのActivities → URL MappingsでPrefix `/` に割り当てます。
 
-Pre-deploy Commandには`npm run migrate`を設定します。マイグレーションは専用のゲーム・配当設定テーブルを更新し、口座の作成やユーザー情報変更は行いません。履歴表示専用の`LEVELIA Game`口座（`1552246348756025344`）は事前に存在する必要があります。配当の取引履歴を表示するには、KARUMA側にも`high_low_bet`と`high_low_payout`の履歴定義が必要です。管理3ロール専用の目標還元率コマンドと配当計算は[ハイロー仕様](docs/high-low.md)を参照してください。
+Pre-deploy Commandには`npm run migrate`を設定します。マイグレーションは専用のゲーム・配当設定テーブルを更新し、口座の作成やユーザー情報変更は行いません。履歴表示専用のCARAVAN GAMES口座（`1552246348756025344`）は事前に存在する必要があります。配当の取引履歴を表示するには、連携先にも`high_low_bet`と`high_low_payout`の履歴定義が必要です。管理3ロール専用の目標還元率コマンドと配当計算は[ハイロー仕様](docs/high-low.md)を参照してください。
+
+旧プロジェクトからの履歴と本番データを壊さないため、既存DBの `levelia_game_*` テーブル名は互換識別子として維持します。新しい画面表示、パッケージ名、ログ上のサービス名にはCARAVAN GAMESを使用します。
 
 Activityは`identify` scopeだけを要求します。残高取得時はブラウザが申告したユーザーIDを信用せず、Bearer tokenをDiscord APIの `/users/@me` で検証します。
 

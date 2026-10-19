@@ -152,7 +152,7 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(port, '0.0.0.0', () => {
-  console.log(`LEVELIA_GAME Activity listening on 0.0.0.0:${port}`);
+  console.log(`CARAVAN_GAMES Activity listening on 0.0.0.0:${port}`);
 });
 
 async function shutdown(signal) {

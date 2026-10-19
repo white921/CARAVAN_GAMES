@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS levelia_game_high_low_hands (
   CONSTRAINT chk_high_low_status CHECK (status IN ('active', 'lost', 'cashed_out', 'auto_cashed_out', 'expired')),
   CONSTRAINT chk_high_low_wager CHECK (wager IN (100, 1000, 10000)),
   CONSTRAINT chk_high_low_streak CHECK (streak BETWEEN 0 AND 5)
-) COMMENT='LEVELIA Game ハイアンドローの進行状態';
+) COMMENT='CARAVAN GAMES ハイアンドローの進行状態';
 
 CREATE TABLE IF NOT EXISTS levelia_game_high_low_commands (
   request_id CHAR(36) NOT NULL,

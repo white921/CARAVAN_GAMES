@@ -4,14 +4,14 @@ import { randomUUID } from 'node:crypto';
 import { correctionForTarget, RTP_CALIBRATION_ID } from '../server/highLowCalibration.mjs';
 import { migrateHighLow } from '../server/highLowMigrations.mjs';
 import { createConnection } from 'mysql2/promise';
-import { createHighLowStore, LEVELIA_GAME_USER_ID } from '../server/highLowStore.mjs';
+import { CARAVAN_GAMES_USER_ID, createHighLowStore } from '../server/highLowStore.mjs';
 
 const mysqlUrl = process.env.TEST_MYSQL_URL;
 const userId = '123456789012345678';
 let nextDraw = 7;
 const randomIndex = n => n === 52 ? nextDraw : n - 1;
 
-test('wager and payout are atomic, idempotent, and never move the LEVELIA Game wallet', {
+test('wager and payout are atomic, idempotent, and never move the CARAVAN GAMES wallet', {
   skip: !mysqlUrl,
 }, async () => {
   const connection = await createConnection({ uri: mysqlUrl, multipleStatements: true, supportBigNumbers: true, bigNumberStrings: true });
@@ -57,13 +57,13 @@ test('wager and payout are atomic, idempotent, and never move the LEVELIA Game w
     `);
     await connection.execute(
       'INSERT INTO accounts (user_id, user_name, wallet) VALUES (?, ?, ?), (?, ?, ?)',
-      [userId, 'player', 20_000, LEVELIA_GAME_USER_ID, 'old name', 777_777],
+      [userId, 'player', 20_000, CARAVAN_GAMES_USER_ID, 'old name', 777_777],
     );
     await migrateHighLow(connection);
 
     const [seededAccounts] = await connection.execute(
       'SELECT user_name, wallet FROM accounts WHERE user_id = ?',
-      [LEVELIA_GAME_USER_ID],
+      [CARAVAN_GAMES_USER_ID],
     );
     assert.equal(seededAccounts[0].user_name, 'old name'); // Migration must not edit account identity.
     assert.equal(seededAccounts[0].wallet, 777_777);
@@ -79,7 +79,7 @@ test('wager and payout are atomic, idempotent, and never move the LEVELIA Game w
 
       let [[player], [game], [betActions], [betLedger]] = await Promise.all([
         connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [userId]).then(([rows]) => rows),
-        connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [LEVELIA_GAME_USER_ID]).then(([rows]) => rows),
+        connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [CARAVAN_GAMES_USER_ID]).then(([rows]) => rows),
         connection.execute("SELECT COUNT(*) AS count FROM actions WHERE command_name = 'high_low_bet'").then(([rows]) => rows),
         connection.execute("SELECT SUM(supply_delta) AS total FROM levelia_game_high_low_ledger").then(([rows]) => rows),
       ]);
@@ -111,7 +111,7 @@ test('wager and payout are atomic, idempotent, and never move the LEVELIA Game w
 
       [[player], [game], [betActions], [betLedger]] = await Promise.all([
         connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [userId]).then(([rows]) => rows),
-        connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [LEVELIA_GAME_USER_ID]).then(([rows]) => rows),
+        connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [CARAVAN_GAMES_USER_ID]).then(([rows]) => rows),
         connection.execute("SELECT COUNT(*) AS count FROM actions WHERE command_name = 'high_low_payout'").then(([rows]) => rows),
         connection.execute("SELECT SUM(supply_delta) AS total FROM levelia_game_high_low_ledger").then(([rows]) => rows),
       ]);
@@ -129,7 +129,7 @@ test('wager and payout are atomic, idempotent, and never move the LEVELIA Game w
       const successful = concurrent.find(result => result.status === 'fulfilled').value;
       const [walletRows] = await connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [userId]);
       assert.equal(walletRows[0].wallet, 20_050 - successful.hand.wager);
-      const [gameRows] = await connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [LEVELIA_GAME_USER_ID]);
+      const [gameRows] = await connection.execute('SELECT wallet FROM accounts WHERE user_id = ?', [CARAVAN_GAMES_USER_ID]);
       assert.equal(gameRows[0].wallet, 777_777);
 
       // Existing DB history and active hands count, without any browser score import.
@@ -159,7 +159,7 @@ test('wager and payout are atomic, idempotent, and never move the LEVELIA Game w
       try {
         assert.equal(await freshStore.readBestStreak(userId), 6);
         assert.equal((await freshStore.readSession(userId)).bestStreak, 6);
-        assert.equal(await freshStore.readBestStreak(LEVELIA_GAME_USER_ID), 0);
+        assert.equal(await freshStore.readBestStreak(CARAVAN_GAMES_USER_ID), 0);
         assert.equal((await freshStore.readSession('999999999999999999')).bestStreak, 0);
       } finally {
         await freshStore.close();
@@ -252,7 +252,7 @@ async function verifyExpirationIsolation(connection, store) {
   await store.expireInactiveHands();
   assert.equal(await store.readWallet(blocked), '1050');
   assert.equal(await store.readWallet(payable), '1050');
-  assert.equal(await store.readWallet(LEVELIA_GAME_USER_ID), '777777');
+  assert.equal(await store.readWallet(CARAVAN_GAMES_USER_ID), '777777');
   const [actions] = await connection.execute(
     "SELECT COUNT(*) AS count FROM actions WHERE command_name = 'high_low_payout' AND to_user_id IN (?, ?)",
     [blocked, payable],
@@ -303,7 +303,7 @@ async function verifySubAccountException(connection, store) {
   });
   assert.equal(settled.settlement.wallet, String(900 + Math.floor(100 * .995 * 12000 / 9003)));
   assert.equal(await store.readWallet(userId), mainWalletBefore);
-  assert.equal(await store.readWallet(LEVELIA_GAME_USER_ID), '777777');
+  assert.equal(await store.readWallet(CARAVAN_GAMES_USER_ID), '777777');
   const [subRows] = await connection.execute('SELECT sub_user_id FROM sub_accounts WHERE main_user_id = ?', [userId]);
   assert.equal(subRows.length, 2); // Registration is preserved; no main-account promotion.
 }
@@ -466,7 +466,7 @@ async function verifyProgressivePayouts(connection) {
     await connection.execute('UPDATE accounts SET wallet = 2147483647 WHERE user_id = ?', [player]);
     await assert.rejects(store.guess({ userId: player, handId: hand.id, guess: 'higher', expectedVersion: hand.version, requestId: randomUUID() }), { code: 'wallet_limit_exceeded' });
     assert.deepEqual(await stored(), before); // No card is consumed for an unpayable offer.
-    assert.equal(await store.readWallet(LEVELIA_GAME_USER_ID), '777777');
+    assert.equal(await store.readWallet(CARAVAN_GAMES_USER_ID), '777777');
     const [[audit]] = await connection.execute('SELECT COUNT(*) AS n FROM levelia_game_high_low_setting_changes');
     assert.equal(Number(audit.n), 2);
   } finally { await store.close(); }

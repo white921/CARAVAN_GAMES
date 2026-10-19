@@ -1,6 +1,6 @@
-# LEVELIA_GAME
+# CARAVAN_GAMES
 
-- 既存のLEVELIA Bot（KARUMA）とは独立したリポジトリ。
+- 旧 `LEVELIA_GAME` から改称した、特定のDiscordサーバーに属さない独立リポジトリ。
 - React / TypeScript / Motion / ViteでDiscord Activity向けのWebゲームを実装する。
 - 画面と状態管理はReact、UIアニメーションはMotion、単純なホバーや装飾はCSSを使う。
 - ゲームごとのコードは `activity/src/games/<game>` に置き、ルールはReactから独立した純粋なTypeScriptとして保つ。
@@ -9,6 +9,6 @@
 - Client ID以外の秘密値とDB接続情報は環境変数で管理し、既存Botから無断で流用しない。
 - ブラウザ内のスコアやゲーム状態は改変可能として扱う。ランキング、報酬、対戦結果に使う場合はサーバーを正とする。
 - `accounts` の作成やユーザー情報変更は行わない。ハイアンドローの賭け金・配当だけは、ゲーム状態・専用台帳・`actions`履歴と同じDBトランザクションで残高へ反映する。
-- `actions`ではLEVELIA GameユーザーID `1552246348756025344` を履歴上の相手として使うが、その口座残高は更新しない。
+- `actions`ではCARAVAN GAMESユーザーID `1552246348756025344` を履歴上の相手として使うが、その口座残高は更新しない。既存DBの `levelia_game_*` テーブル名は互換性のため維持する。
 - Discord Activity内と通常ブラウザの両方で動作させる。`prefers-reduced-motion`を尊重する。
 - コミット前に `npm run check`、`npm test`、`npm run build` を実行する。

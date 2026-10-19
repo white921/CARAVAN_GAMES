@@ -12,7 +12,7 @@ jobs:
       mysql:
         image: mysql:8.4
         env:
-          MYSQL_DATABASE: levelia_game_test
+          MYSQL_DATABASE: caravan_games_test
           MYSQL_ROOT_PASSWORD: test
         ports:
           - 3306:3306
@@ -22,7 +22,7 @@ jobs:
           --health-timeout=5s
           --health-retries=20
     env:
-      TEST_MYSQL_URL: mysql://root:test@127.0.0.1:3306/levelia_game_test
+      TEST_MYSQL_URL: mysql://root:test@127.0.0.1:3306/caravan_games_test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

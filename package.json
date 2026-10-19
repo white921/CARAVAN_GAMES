@@ -1,8 +1,8 @@
 {
-  "name": "levelia-game",
+  "name": "caravan-games",
   "version": "0.1.0",
   "private": true,
-  "description": "Discord Activity games for LEVELIA",
+  "description": "A traveling Discord Activity game lobby",
   "type": "module",
   "engines": {
     "node": "22.x"

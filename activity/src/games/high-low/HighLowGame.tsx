@@ -147,7 +147,7 @@ export function HighLowGame({ best, onBestChange, accessToken, inDiscord, onWall
       onWalletChanged();
       if (!session.accountFound) {
         updateHand(null);
-        setErrorMessage('LEVELIAの口座が見つかりません。');
+        setErrorMessage('利用可能なLIA口座が見つかりません。');
         setPhase('setup');
         return;
       }
@@ -452,7 +452,7 @@ export function HighLowGame({ best, onBestChange, accessToken, inDiscord, onWall
             </div>
           ) : null}
           {phase === 'setup' && !accessToken && !inDiscord ? (
-            <p className="real-play-notice">この画面では結果を生成しません。DiscordでLEVELIA Gameを起動すると、残高とサーバー抽選でプレイできます。</p>
+            <p className="real-play-notice">この画面では結果を生成しません。DiscordでCARAVAN GAMESを起動すると、残高とサーバー抽選でプレイできます。</p>
           ) : null}
           <p className="disconnect-note">通信が切れた場合は5分間再接続できます。復帰しなければ、1勝以上は現在倍率で自動精算、0勝は払い戻しなしで終了します。</p>
         </section>

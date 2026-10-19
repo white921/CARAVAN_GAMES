@@ -60,7 +60,7 @@ export function AccountPanel({ onSessionChange, balanceRefreshKey }: AccountPane
       setBalance(result.accountFound && result.wallet !== null ? formatWallet(result.wallet) : '口座なし');
       setStatus(result.accountFound
         ? result.walletMode === 'virtual' ? '仮想残高テスト・実際のLIAは増減しません' : `@${activeSession.user.username} と連携済み`
-        : 'LEVELIAの口座が見つかりません');
+        : '利用可能なLIA口座が見つかりません');
     } catch (error) {
       console.error('Balance lookup failed', { statusCode: error instanceof ActivityApiError ? error.statusCode : null });
       if (error instanceof ActivityApiError && error.statusCode === 401) {

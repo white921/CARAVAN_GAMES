@@ -19,11 +19,11 @@ function Header({ route, onOpenRules, onOpenRanking }: { route: ActivityRoute; o
   const playing = route === 'high-low';
   return (
     <header className="site-header">
-      <a className="brand" href="#lobby" aria-label="LEVELIA GAMES ロビー">
-        <img className="brand-mark" src="./images/levelia-game-icon.png" alt="" width="42" height="42" />
+      <a className="brand" href="#lobby" aria-label="CARAVAN GAMES ロビー">
+        <img className="brand-mark" src="./images/caravan-games-icon.png" alt="" width="42" height="42" />
         <span className="brand-copy">
-          <span className="brand-name">LEVELIA</span>
-          <span className="brand-subtitle">ADVENTURERS' GUILD</span>
+          <span className="brand-name">CARAVAN</span>
+          <span className="brand-subtitle">TRAVELING GAME LOBBY</span>
         </span>
       </a>
       <div className="header-actions">
@@ -40,9 +40,9 @@ function LobbyHeading() {
     <section className="view lobby-heading-view" aria-labelledby="lobby-title">
       <div className="lobby-hero">
         <div className="lobby-heading">
-          <p className="eyebrow">LEVELIA ADVENTURERS' GUILD</p>
-          <h1 className="lobby-title" id="lobby-title"><span>GUILD</span><strong>LEVELIA GAMES</strong></h1>
-          <p>冒険の合間に、運と読みを試す遊戯場。</p>
+          <p className="eyebrow">THE TRAVELING GAME LOBBY</p>
+          <h1 className="lobby-title" id="lobby-title"><span>PLAY ANYWHERE</span><strong>CARAVAN GAMES</strong></h1>
+          <p>サーバーを巡り、遊びを届けるゲームロビー。</p>
         </div>
       </div>
     </section>
@@ -89,7 +89,7 @@ function LobbyGameList({ best, reducedMotion }: { best: number | null; reducedMo
             </article>
           ))}
         </div>
-        <p className="lobby-note">新しい遊戯は、このギルドホールに追加されます。</p>
+        <p className="lobby-note">新しいゲームは、このキャラバンに追加されます。</p>
     </motion.section>
   );
 }
@@ -183,7 +183,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    document.title = route === 'high-low' ? 'High & Low | LEVELIA GAMES' : 'LEVELIA GAMES';
+    document.title = route === 'high-low' ? 'High & Low | CARAVAN GAMES' : 'CARAVAN GAMES';
     window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
   }, [reducedMotion, route]);
 

@@ -18,7 +18,7 @@ test('virtual play persists separately through retry, loss, cashout, expiry and 
   let store;
   try {
     const [[db]] = await c.query('SELECT DATABASE() AS name');
-    assert.match(db.name, /^levelia_.*test$/);
+    assert.match(db.name, /^caravan_.*test$/);
     assert.notEqual(mysqlUrl, process.env.TEST_MYSQL_URL, 'Virtual suite requires its own disposable database');
     const [tables] = await c.query('SHOW TABLES');
     await c.query('SET FOREIGN_KEY_CHECKS=0');

@@ -7,7 +7,7 @@ import { createHighLowLeaderboard } from '../server/highLowLeaderboard.mjs';
 
 const mysqlUrl = process.env.TEST_LEADERBOARD_MYSQL_URL;
 test('weekly SQL counts ordered guesses across hands, isolates modes, and ranks only settled payouts', { skip: !mysqlUrl }, async () => {
-  assert.match(new URL(mysqlUrl).pathname, /^\/levelia_leaderboard_test$/);
+  assert.match(new URL(mysqlUrl).pathname, /^\/caravan_leaderboard_test$/);
   const db = await createConnection({ uri: mysqlUrl, multipleStatements: true, timezone: 'Z' });
   const tables = { hands: 'levelia_game_high_low_hands', commands: 'levelia_game_high_low_commands' };
   const playerA = '111111111111111111';
